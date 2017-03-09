@@ -1,0 +1,20 @@
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="com.github.sycyhy.logging.CustomPatternLayoutEncoder">
+            <pattern>%cyan(%d) %magenta([%thread]) - %highlight(%-5level) %logger{0} - %message%n%xException{10}
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNCSTDOUT" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="STDOUT" />
+    </appender>
+
+    <logger name="com.github" level="${LOGGING_LEVEL:-DEBUG}" />
+
+    <root level="INFO">
+        <appender-ref ref="ASYNCSTDOUT" />
+    </root>
+
+</configuration>
