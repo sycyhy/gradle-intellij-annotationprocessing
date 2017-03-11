@@ -64,10 +64,23 @@ idea {
     project {
         ipr {
             withXml {
-                File ideaCompilerXml = project.file('.idea/compiler.xml')
-                if (ideaCompilerXml.isFile()) {
 
-                    Node parsedXml = new XmlParser().parse(ideaCompilerXml)
+                File ideaCompilerXml = project.file('.idea/compiler.xml')
+                Node parsedXml;
+                if (ideaCompilerXml.isFile()) {
+                    parsedXml = new XmlParser().parse(ideaCompilerXml)
+                } else {
+                    def writer = new StringWriter()
+                    writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
+                    def xml = new groovy.xml.MarkupBuilder(writer).project(version:"4") {
+                            component(name:"CompilerConfiguration") {
+                                annotationProcessing() {}
+                            }
+                    }
+
+                    parsedXml = new XmlParser().parseText(writer.toString())
+                    println parsedXml
+                }
 
                     Node compilerConfiguration = parsedXml.component.find {
                         component -> component.'@name' == 'CompilerConfiguration'
@@ -90,4 +103,3 @@ idea {
             }
         }
     }
-}
