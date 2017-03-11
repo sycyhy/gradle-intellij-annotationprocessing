@@ -6,4 +6,8 @@ Currently it uses:
 * Lombok
 * Autovalue from google
 
+To enable annotation processing just run:
+
+	./gradlew idea
+
 
